@@ -20,23 +20,25 @@
         @keyup.enter="addTask"
       ></v-text-field>
     </v-col>
-    <div v-if="no_tasks" class="mt-16 animate__animated animate__bounceInUp" >
+  <div justify="center">
+      <div v-if="no_tasks" class="mt-16 animate__animated animate__bounceInUp" >
       <center>
         <v-icon size="100" color="red lighten-1">mdi-emoticon-sad</v-icon>
         <div class="text-h5 red--text">No tasks included</div>
       </center>
     </div>
     <tasks-list v-else-if="!loading_tasks" :tasks="items"></tasks-list>
-    <div v-else class="progress">
+   
+    <div v-else align="center" justify="center" style="padding-bottom: 60px">
       <v-progress-circular 
       :size="70"
       :width="7"
       color="red"
       indeterminate
       ></v-progress-circular>
-      
-      <span class="loading"><strong>Loading</strong></span>
-    </div>  
+    </div>    
+  </div>
+    
     <v-snackbar
       v-model="snackbarActivate"
       timeout="2500"
@@ -52,6 +54,9 @@
 
 <script>
 //<v-icon size="100" color="red lighten-1">mdi-emoticon-sad</v-icon> <v-img src="../assets/images/thamaraespeio.png" max-width="100px" max-height="150px"></v-img>
+// <div v-else>
+//      <tile color="#03fca9"></tile>
+//</div>
  import TasksList from '../components/Tasks/TasksList.vue'
 
   export default {
@@ -100,13 +105,11 @@
 </script>
 <style scoped>
   .progress {
-    display: flex;
-    align-items: center;
-    justify-content: center;  
+     margin: auto;
+     padding: 10px;
   }
-  .loading {
-    position: relative;
-    top: 72px;
-    right: 58px; 
+
+  .changeColor {
+    color:aqua
   }
 </style>

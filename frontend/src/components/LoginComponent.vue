@@ -66,7 +66,7 @@
     name: 'LoginComponent',
     computed: {
       matchPasswords() {
-        return this.password === this.verify || "Passwords must match";
+        return this.formRegister.password === this.formRegister.verify || "Passwords must match";
       }
     },
     methods: {
