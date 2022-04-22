@@ -1,6 +1,33 @@
 <template>
     <div>
-        <drop-list :items="items" @reorder="$event.apply(items)">
+            
+        <v-toolbar
+        color="#d15c79"
+        dark
+        >
+
+            <v-toolbar-title>Tasks List</v-toolbar-title>
+         
+                 
+              
+            <div style="padding-left: 40px">
+                <v-icon>mdi-magnify</v-icon>
+            </div>
+             
+              
+            <div style="padding-left: 18px; padding-top: 20px">
+                <v-text-field class="search"  placeholder="Search..." v-model="search">
+                </v-text-field>  
+               
+
+            </div>      
+            <v-spacer></v-spacer>
+            <v-btn icon>
+                <v-icon>mdi-checkbox-marked-circle</v-icon>
+            </v-btn>
+        </v-toolbar>
+        <v-spacer></v-spacer>
+            <drop-list :items="items" @reorder="$event.apply(items)">
                                 <template v-slot:item="{item, reorder}">
                                     <drag :key="item.id" :data="item">
                                         <tasks-component  @taskDeleted="deleted_task"
@@ -10,7 +37,10 @@
                                         <v-divider/>
                                     </drag>
                                 </template>                 
-        </drop-list>
+            </drop-list>
+            <v-divider color="black"></v-divider>
+       <br>
+        
         <v-snackbar
             v-model="snackbar_delete_activate"
             timeout="2500"
@@ -32,7 +62,8 @@ export default {
     data() {
         return {
             snackbar_delete_activate: false,
-            items: []
+            items: [],
+            search: ''
         }
     },
     created () {
@@ -58,5 +89,7 @@ export default {
 </script>
 
 <style>
-
+    .search {
+        padding-top: 150px;
+    }
 </style>

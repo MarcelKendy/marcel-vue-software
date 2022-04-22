@@ -1,16 +1,16 @@
 <template>
   <div>
+    
     <v-list-item
-      :class="item.done ? 'blue lighten-4' : ''"
+      :class="item.done ? 'blue lighten-4 hover-list-done' : 'hover-list'"
       @click="doneTask"
     >
             <template v-slot:default="{}">
               <v-list-item-action>
                 <v-checkbox :input-value="item.done"></v-checkbox>
               </v-list-item-action>
-
               <v-list-item-content>
-                <v-list-item-title :class="item.done ? 'text-decoration-line-through' : ''">{{item.title}}</v-list-item-title>
+                <v-list-item-title :class="item.done ? 'text-decoration-line-through title-done' : 'black--text'">{{item.title}}</v-list-item-title>
                 <v-list-item-subtitle>{{item.subtitle}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
@@ -55,5 +55,21 @@ export default {
 </script>
 
 <style>
+  .title-done {
+    font-weight: bolder;
+    color: #3852A4;
+  }
+  .hover-list {
+  transition: box-shadow .3s;
+  }
+  .hover-list:hover {
+    box-shadow: 0 0 20px rgb(65, 123, 209); 
+  }
+  .hover-list-done {
+  transition: box-shadow .3s;
+  }
+  .hover-list-done:hover {
+    box-shadow: 0 0 20px rgb(33,33,33); 
 
+  }
 </style>

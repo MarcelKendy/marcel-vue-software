@@ -46,7 +46,7 @@
 
 
     <v-app-bar
-      
+      shrink-on-scroll
       app
       color="#d15c79"
       dark
@@ -63,7 +63,10 @@
 
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-app-bar-title>Welcome</v-app-bar-title>
+      
+        <strong style="padding-left: 20px;">Welcome</strong>
+      
+      
 
       <v-spacer></v-spacer>
 

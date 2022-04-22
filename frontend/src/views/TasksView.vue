@@ -20,15 +20,23 @@
         @keyup.enter="addTask"
       ></v-text-field>
     </v-col>
-  <div justify="center">
+  
       <div v-if="no_tasks" class="mt-16 animate__animated animate__bounceInUp" >
       <center>
         <v-icon size="100" color="red lighten-1">mdi-emoticon-sad</v-icon>
         <div class="text-h5 red--text">No tasks included</div>
       </center>
     </div>
-    <tasks-list v-else-if="!loading_tasks" :tasks="items"></tasks-list>
-   
+    <v-card
+        v-else-if="!loading_tasks"
+        elevation="12"
+        outlined
+        shaped
+        class="mx-auto my-12"
+        width="98%"
+        >
+      <tasks-list  :tasks="items"></tasks-list>
+    </v-card>
     <div v-else align="center" justify="center" style="padding-bottom: 60px">
       <v-progress-circular 
       :size="70"
@@ -37,7 +45,7 @@
       indeterminate
       ></v-progress-circular>
     </div>    
-  </div>
+  
     
     <v-snackbar
       v-model="snackbarActivate"
