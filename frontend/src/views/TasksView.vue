@@ -20,32 +20,8 @@
         @keyup.enter="addTask"
       ></v-text-field>
     </v-col>
-  
-      <div v-if="no_tasks" class="mt-16 animate__animated animate__bounceInUp" >
-      <center>
-        <v-icon size="100" color="red lighten-1">mdi-emoticon-sad</v-icon>
-        <div class="text-h5 red--text">No tasks included</div>
-      </center>
-    </div>
-    <v-card
-        v-else-if="!loading_tasks"
-        elevation="12"
-        outlined
-        shaped
-        class="mx-auto my-12"
-        width="98%"
-        >
-      <tasks-list  :tasks="items"></tasks-list>
-    </v-card>
-    <div v-else align="center" justify="center" style="padding-bottom: 60px">
-      <v-progress-circular 
-      :size="70"
-      :width="7"
-      color="red"
-      indeterminate
-      ></v-progress-circular>
-    </div>    
-  
+     
+    <tasks-list @taskEdited="edited_task" @taskDeleted="deleted_task" :tasks="items" :loading="loading_tasks"></tasks-list>
     
     <v-snackbar
       v-model="snackbarActivate"
@@ -78,7 +54,6 @@
         items: [],
         snackbarActivate: false,
         text_included: 'Data has been saved successfully!',
-        no_tasks: false,
         loading_tasks: true
       }
     },
@@ -88,7 +63,6 @@
         this.$http.post('add_task', this.new_task).then((response)=>{
           console.log(response.data)
           this.items.push(response.data)
-          this.no_tasks = false
           this.snackbarActivate = true
         })
         this.new_task.title = ''
@@ -98,14 +72,19 @@
         this.$http.get('get_tasks').then((response)=>{
           this.items = response.data;  
           this.loading_tasks = false
-          if (!this.items.length) {
-            this.no_tasks = true
-          }
         })
       },
+      deleted_task(id) {
+        this.items = this.items.filter(function( task ) {
+          return task.id !== id
+        })
+      },
+      edited_task(task) {
+        this.items = this.items.map(item => item.id !== task.id ? item : task)
+      }
     },
     created () {
-      this.getTasks();
+      this.getTasks()
       //this.$store.commit('getTasks') 
     }
   }

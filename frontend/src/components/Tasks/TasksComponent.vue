@@ -34,10 +34,12 @@ export default {
     }
   },
   created() {
+    this.item = []
     this.item = this.task
   },
   methods: {
     edited_task(task) {
+      this.$emit('taskEdited', task)
       this.item = task
     },
     deleted_task(id) {
