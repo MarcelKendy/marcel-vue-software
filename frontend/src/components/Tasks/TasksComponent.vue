@@ -49,6 +49,7 @@ export default {
     doneTask() {
       this.item.done = !this.item.done
       this.$http.put(`done_task/${this.item.id}`, this.item).then((response)=>{
+        this.$emit('doneEdited', this.item.id)
         console.log(response.data) 
       })     
     }

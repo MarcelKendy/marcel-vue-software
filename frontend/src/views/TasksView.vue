@@ -1,25 +1,54 @@
 <template>
   <div>
-    <v-subheader>Add a new task</v-subheader>
-    <v-col
-      cols="12"
-    >
-      <v-text-field
-        label="Task name"
-        placeholder="Type the name"
-        outlined
-        v-model="new_task.title"
-        dense
-      ></v-text-field>
-      <v-text-field
-        label="Description"
-        placeholder="Type the description"
-        outlined
-        v-model="new_task.subtitle"
-        dense
-        @keyup.enter="addTask"
-      ></v-text-field>
-    </v-col>
+    <v-container>
+      
+            <v-hover v-slot="{ hover }">
+            <v-card
+              :elevation="hover ? 12 : 2"
+              outlined
+              shaped
+            >
+              <v-card-title :class="hover ? 'green--text' : ''"><strong>Add a New Task:</strong></v-card-title>
+              <v-card-subtitle>Fill the information and click "Confirm", or press "enter"</v-card-subtitle>
+              <v-card-text>
+                <v-col
+                  cols="12"
+                >
+                  <v-text-field
+                    label="Task name"
+                    placeholder="Type the name"
+                    outlined
+                    v-model="new_task.title"
+                    dense
+                    @keyup.enter="addTask"
+                  ></v-text-field>
+                  <v-text-field
+                    label="Description"
+                    placeholder="Type the description"
+                    outlined
+                    v-model="new_task.subtitle"
+                    dense
+                    @keyup.enter="addTask"
+                  ></v-text-field>
+                </v-col>  
+              </v-card-text>
+              <v-card-actions style="padding-right:30px">
+                <v-spacer></v-spacer>
+                <v-btn
+                  :loading="false"
+                  color="success"
+                  @click="addTask"
+                >
+                  <span>Confirm</span>    
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          
+        </v-hover>
+      
+    </v-container>
+    
+    
      
     <tasks-list @taskEdited="edited_task" @taskDeleted="deleted_task" :tasks="items" :loading="loading_tasks"></tasks-list>
     
