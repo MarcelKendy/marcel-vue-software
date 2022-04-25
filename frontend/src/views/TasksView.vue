@@ -10,8 +10,8 @@
               shaped
               class="hover-card"
             >
-              <v-card-title class="title-card"><strong>Add a New Task:</strong></v-card-title>
-              <v-card-subtitle><strong> Fill the information and click "Confirm", or press "enter"</strong></v-card-subtitle>
+              <v-card-title class="title-card" style="font-family: 'Quicksand', sans-serif;"><strong>Add a New Task:</strong></v-card-title>
+              <v-card-subtitle style="font-family: 'Quicksand', sans-serif;"><strong> Fill the information and click "Confirm", or press "enter"</strong></v-card-subtitle>
               <v-card-text>
                 <v-col
                   cols="12"

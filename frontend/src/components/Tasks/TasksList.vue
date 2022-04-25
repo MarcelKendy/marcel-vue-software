@@ -26,7 +26,7 @@
                 </div>
                 
             
-                <v-toolbar-title style="padding-left: 20px">Tasks List</v-toolbar-title>
+                <v-toolbar-title style="padding-left: 20px;font-family: 'Quicksand', sans-serif;"><strong>Tasks List</strong></v-toolbar-title>
                 <div style="padding-left: 40px">
                     <v-tooltip top color="rgb(44, 44, 44)">
                         <template v-slot:activator="{ on, attrs }">
@@ -41,7 +41,7 @@
                 <v-spacer></v-spacer>
                 
                 <div @click="filterDone" v-if="this.$vuetify.breakpoint.name != 'xs'" class="tooltip" style="box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; border-radius: 10px; cursor: pointer;">
-                    <span style="padding-left: 10px">{{this.done_filter ? 'Tasks Done ' : 'All Tasks '}}</span>
+                    <span style="padding-left: 10px;font-family: 'Quicksand', sans-serif;">{{this.done_filter ? 'Tasks Done ' : 'All Tasks '}}</span>
                     <v-btn :loading="done_filter_loading" icon @click="filterDone" >
                         <v-icon>{{this.done_filter ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-marked-circle-outline'}}</v-icon>
                     </v-btn><span class="tooltiptext">{{this.done_filter ? 'Show All Tasks' : 'Show tasks done'}}</span>
