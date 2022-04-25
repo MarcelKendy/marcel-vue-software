@@ -1,20 +1,23 @@
 <template>
   <div>
     <v-container>
-      
-            <v-hover v-slot="{ hover }">
+          <v-slide-y-transition>
+
+          
             <v-card
-              :elevation="hover ? 12 : 2"
+              v-if="show_card"
               outlined
               shaped
+              class="hover-card"
             >
-              <v-card-title :class="hover ? 'green--text' : ''"><strong>Add a New Task:</strong></v-card-title>
-              <v-card-subtitle>Fill the information and click "Confirm", or press "enter"</v-card-subtitle>
+              <v-card-title class="title-card"><strong>Add a New Task:</strong></v-card-title>
+              <v-card-subtitle><strong> Fill the information and click "Confirm", or press "enter"</strong></v-card-subtitle>
               <v-card-text>
                 <v-col
                   cols="12"
                 >
                   <v-text-field
+                    color="success"
                     label="Task name"
                     placeholder="Type the name"
                     outlined
@@ -23,6 +26,7 @@
                     @keyup.enter="addTask"
                   ></v-text-field>
                   <v-text-field
+                    color="success"
                     label="Description"
                     placeholder="Type the description"
                     outlined
@@ -43,14 +47,12 @@
                 </v-btn>
               </v-card-actions>
             </v-card>
-          
-        </v-hover>
-      
+          </v-slide-y-transition>  
     </v-container>
     
     
      
-    <tasks-list @taskEdited="edited_task" @taskDeleted="deleted_task" :tasks="items" :loading="loading_tasks"></tasks-list>
+    <tasks-list transition="slide-y-reverse-transition" @taskEdited="edited_task" @taskDeleted="deleted_task" @showCard="card_active" :tasks="items" :loading="loading_tasks"></tasks-list>
     
     <v-snackbar
       v-model="snackbarActivate"
@@ -82,6 +84,7 @@
         new_task: {title: '', subtitle: ''},
         items: [],
         snackbarActivate: false,
+        show_card: false,
         text_included: 'Data has been saved successfully!',
         loading_tasks: true
       }
@@ -110,6 +113,9 @@
       },
       edited_task(task) {
         this.items = this.items.map(item => item.id !== task.id ? item : task)
+      },
+      card_active(active) {
+        this.show_card = active
       }
     },
     created () {
@@ -124,8 +130,21 @@
      margin: auto;
      padding: 10px;
   }
-
   .changeColor {
     color:aqua
+  }
+  .hover-card {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;  
+    transition: box-shadow .3s;
+  }
+  .hover-card:hover {
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; 
+  }
+  .title-card {
+    transition: .4s;
+  }
+  .hover-card:hover .title-card {
+    transition: .4s;
+    color: #4caf50; 
   }
 </style>

@@ -2,7 +2,7 @@
   <div>
     
     <v-list-item
-      :class="item.done ? 'blue lighten-4 hover-list-done' : 'hover-list'"
+      :class="item.done ? 'blue lighten-4 hover-list' : 'hover-list'"
       @click="doneTask"
     >
             <template v-slot:default="{}">

@@ -9,30 +9,51 @@
         width="98%"
         >
          
-        <v-toolbar color="#d15c79" dark>
-            <v-toolbar-title>Tasks List</v-toolbar-title>
-            <div style="padding-left: 40px">
-                <v-icon>mdi-magnify</v-icon>
-            </div>
-            <div style="padding-left: 18px; padding-top: 20px">
-                <v-text-field class="search"  placeholder="Search..." :disabled="loading" v-model="search"></v-text-field>  
-            </div>      
-            <v-spacer></v-spacer>
-            
-            <div v-if="this.$vuetify.breakpoint.name != 'xs'" class="tooltip">
-                <span>{{this.done_filter ? 'Tasks Done ' : 'All Tasks '}}</span>
-                <v-btn :loading="done_filter_loading" icon @click="filterDone" >
-                    <v-icon>{{this.done_filter ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-marked-circle-outline'}}</v-icon>
-                </v-btn><span class="tooltiptext">{{this.done_filter ? 'Show All Tasks' : 'Show tasks done'}}</span>
-            </div>     
-             <v-btn v-else :loading="done_filter_loading" icon @click="filterDone" >
-                <v-icon>{{this.done_filter ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-marked-circle-outline'}}</v-icon>
-            </v-btn>   
-            
+            <v-toolbar color="#d15c79" dark>
+                <div class="tooltip_plus">
+                    <v-fab-transition >
+                        <v-btn
+                        :key="this.card_active ? 1 : 0"
+                        color="green"
+                        fab
+                        dark
+                        small
+                        @click="addCard()"  
+                        >
+                            <v-icon>{{this.card_active ? 'mdi-close' : 'mdi-plus' }}</v-icon>
+                        </v-btn>
+                </v-fab-transition><span class="tooltiptext_plus">{{this.card_active ? 'Close Add' : 'New Task'}}</span>
+                </div>
                 
             
-        </v-toolbar>
-        <v-spacer></v-spacer>
+                <v-toolbar-title style="padding-left: 20px">Tasks List</v-toolbar-title>
+                <div style="padding-left: 40px">
+                    <v-tooltip top color="rgb(44, 44, 44)">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on">mdi-magnify</v-icon>
+                        </template>
+                        <span>Search tasks by name or description</span>
+                    </v-tooltip>
+                </div>
+                <div style="padding-left: 18px; padding-top: 20px">
+                    <v-text-field class="search"  placeholder="Search..." :disabled="loading" v-model="search"></v-text-field>  
+                </div>      
+                <v-spacer></v-spacer>
+                
+                <div @click="filterDone" v-if="this.$vuetify.breakpoint.name != 'xs'" class="tooltip" style="box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; border-radius: 10px; cursor: pointer;">
+                    <span style="padding-left: 10px">{{this.done_filter ? 'Tasks Done ' : 'All Tasks '}}</span>
+                    <v-btn :loading="done_filter_loading" icon @click="filterDone" >
+                        <v-icon>{{this.done_filter ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-marked-circle-outline'}}</v-icon>
+                    </v-btn><span class="tooltiptext">{{this.done_filter ? 'Show All Tasks' : 'Show tasks done'}}</span>
+                </div>     
+                <v-btn v-else :loading="done_filter_loading" icon @click="filterDone" >
+                    <v-icon>{{this.done_filter ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-marked-circle-outline'}}</v-icon>
+                </v-btn>   
+                
+                    
+                
+            </v-toolbar>
+            <v-spacer></v-spacer>
             <div v-if="loading" align="center" justify="center" style="padding-bottom: 20px;padding-top: 20px;">
                 <v-progress-circular 
                 :size="40"
@@ -86,7 +107,8 @@ export default {
             search: '',
             done_filter: false,
             done_filter_loading: false,
-            no_tasks: false
+            no_tasks: false,
+            card_active: false
         }
     },
     created () {
@@ -124,11 +146,11 @@ export default {
             this.items = []
             if (this.done_filter) {
                 this.items = this.tasksMutable.filter(( task )=>{
-                    return ((this.search.toLowerCase().split(' ').every(search_char => task.title.toLowerCase().includes(search_char))) && (task.done))
+                    return ((this.search.toLowerCase().split(' ').every(search_char => ((task.title.toLowerCase().includes(search_char)) || (task.subtitle.toLowerCase().includes(search_char))))) && (task.done))
                 })
             } else {
                 this.items = this.tasksMutable.filter(( task )=>{
-                    return this.search.toLowerCase().split(' ').every(search_char => task.title.toLowerCase().includes(search_char))
+                    return this.search.toLowerCase().split(' ').every(search_char => ((task.title.toLowerCase().includes(search_char)) || (task.subtitle.toLowerCase().includes(search_char))))
                 })
             }
             this.done_filter_loading = false
@@ -168,6 +190,10 @@ export default {
                     this.no_tasks = false
                 }
             } 
+        },
+        addCard () {
+            this.card_active = !this.card_active
+            this.$emit('showCard', this.card_active)    
         }
     },
     watch: {
@@ -195,8 +221,9 @@ export default {
         display: inline-block;
     }
     .tooltip .tooltiptext {
+        font-size: 5px;
         visibility: hidden;
-        width: 140px;
+        width: 40px;
         background-color: rgb(44, 44, 44);
         color: #fff;
         text-align: center;
@@ -206,9 +233,10 @@ export default {
         z-index: 1;
         top: -40px;
         bottom: auto;
-        right: -10%;
+        /*right: -10%; */
+        left: 30%;
         opacity: 0;
-        transition: opacity 0.3s;
+        transition: 0.3s;
     }
     .tooltip .tooltiptext::after {
         content: "";
@@ -221,8 +249,58 @@ export default {
         border-color: rgb(44, 44, 44) transparent transparent transparent;
     }
     .tooltip:hover .tooltiptext {
+        font-size: 15px;
         visibility: visible;
-        opacity: 1;
+        opacity: 0.9;
+        width: 140px;
+        right: -10%;
+        left: 0;
+    }
+
+
+
+
+    .tooltip_plus {
+        position: relative;
+        display: inline-block;
+    }
+    .tooltip_plus .tooltiptext_plus {
+        visibility: hidden;
+        width: 40px;
+        background-color: rgb(44, 44, 44);
+        color: #fff;
+        font-size: 4px;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        position: absolute;
+        z-index: 1;
+        top: -45px;
+        bottom: auto;
+        left: -40%;
+        right: 20%;
+        left: 0%;
+        opacity: 0;
+        transition: 0.4s;
+    }
+    .tooltip_plus .tooltiptext_plus::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 39.5%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: rgb(44, 44, 44) transparent transparent transparent;
+    }
+    .tooltip_plus:hover .tooltiptext_plus {
+        font-size: 15px;
+        visibility: visible;
+        opacity: 0.9;
+        width: 90px;
+        bottom: auto;
+        left: -40%;
+        right: 0;
     }
 
 </style>
